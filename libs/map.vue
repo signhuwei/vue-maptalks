@@ -6,7 +6,7 @@
 
 <script>
 import { Map as mtMap } from 'maptalks'
-import { toRefs, watch, onMounted } from 'vue'
+import { toRefs, watch, onMounted, ref, provide } from 'vue'
 export default {
     name: 'mtMap',
     props: {
@@ -18,18 +18,25 @@ export default {
     setup(props){
 			const { id,projection } = props
 			const { center, zoom } = toRefs(props)
-			let map = null
-			onMounted(()=>{
-				map = new mtMap(id,{
+			let map = ref(null)
+
+			provide('mtMap',map)
+			watch(zoom,()=>map.value.setZoom(zoom.value))
+			watch(center,()=>map.value.setCenter(center.value))
+
+			onMounted(() => {
+				map.value = new mtMap(id,{
 					center: center.value,
 					zoom: zoom.value,
 					view: {
 						projection
-					}
+					},
+					attributionControl: false, //版权信息控件
+					zoomControl: true, //设置缩放控件的位置
+					scaleControl: true, //比例尺控件
 				})
 			})
-			watch(zoom,()=>map.setZoom(zoom.value))
-			watch(center,()=>map.setCenter(center.value))
+			return {}
     }
 }
 </script>

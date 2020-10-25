@@ -5,10 +5,17 @@
 
 import  mtMap from './map.vue'
 import  mtTilelayer from './tilelayer.vue'
-
+import  mtVectorlayer from './vectorlayer.vue'
+import  mtMarker from './marker.vue'
+import 'maptalks/dist/maptalks.css'
 export default {
   install: (app,opts = {}) => {
-    [mtMap, mtTilelayer].forEach(c => {
+    [
+      mtMap,
+      mtTilelayer,
+      mtVectorlayer,
+      mtMarker
+    ].forEach(c => {
       app.component(c.name, c)
     })
   }
